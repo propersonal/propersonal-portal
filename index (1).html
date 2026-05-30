@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProPersonal Agency & AI — Операційний портал</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg: #f7f5f0;
+  --white: #ffffff;
+  --ink: #111118;
+  --ink2: #2a2a38;
+  --muted: #888899;
+  --border: #e8e4dc;
+  --gold: #c9a84c;
+  --gold2: #f0d080;
+  --gold-bg: #fdf8ec;
+  --green: #1a7a5e;
+  --green-bg: #e8f5f0;
+  --red: #c0392b;
+  --red-bg: #fdf0ee;
+  --blue: #1a4a8a;
+  --blue-bg: #eef3fc;
+  --orange: #c05a1a;
+  --orange-bg: #fdf3ec;
+  --purple: #5a2d8a;
+  --purple-bg: #f3eefb;
+  --shadow: 0 2px 16px rgba(17,17,24,0.07);
+  --shadow-lg: 0 8px 40px rgba(17,17,24,0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 240px;
+  background: var(--ink);
+  min-height: 100vh;
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 50;
+}
+
+.sidebar-logo {
+  padding: 28px 24px 24px;
+  border-bottom: 1px solid #ffffff11;
+}
+.logo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+.logo-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+}
+.logo-sub {
+  font-size: 11px;
+  color: #ffffff55;
+  margin-top: 2px;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-section {
+  font-size: 10px;
+  font-weight: 600;
+  color: #ffffff33;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 12px 12px 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #ffffff88;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+}
+.nav-item:hover { background: #ffffff11; color: #fff; }
+.nav-item.active { background: var(--gold); color: var(--ink); font-weight: 600; }
+.nav-item .nav-icon { font-size: 15px; width: 20px; text-align: center; }
+.nav-badge {
+  margin-left: auto;
+  background: var(--red);
+  color: #fff;
+  border-radius: 99px;
+  padding: 1px 7px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.nav-item.active .nav-badge { background: var(--ink); color: var(--gold); }
+
+.sidebar-user {
+  padding: 16px;
+  border-top: 1px solid #ffffff11;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.user-avatar {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  background: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 13px; font-weight: 800;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+.user-name { font-size: 13px; font-weight: 600; color: #fff; }
+.user-role { font-size: 11px; color: #ffffff44; }
+
+/* MAIN */
+.main {
+  margin-left: 240px;
+  flex: 1;
+  min-height: 100vh;
+}
+
+.topbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0; z-index: 40;
+}
+.topbar-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.topbar-date { font-size: 12px; color: var(--muted); }
+
+.content { padding: 28px 32px; }
+
+/* PAGE */
+.page { display: none; }
+.page.active { display: block; animation: fadeIn 0.25s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+
+/* STATS ROW */
+.stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 24px; }
+.stat {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+.stat-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.stat-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.stat-trend { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 99px; }
+.trend-up { background: var(--green-bg); color: var(--green); }
+.trend-down { background: var(--red-bg); color: var(--red); }
+.stat-val { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--ink); }
+.stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* GRID */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+/* CARD */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+}
+.card-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+}
+.card-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--ink); }
+.card-action {
+  font-size: 12px; color: var(--gold); font-weight: 600;
+  cursor: pointer; border: none; background: none;
+}
+
+/* FUNNEL */
+.funnel { display: flex; gap: 10px; margin-bottom: 20px; }
+.funnel-col { flex: 1; }
+.funnel-header {
+  font-size: 11px; font-weight: 600; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.funnel-count {
+  background: var(--ink);
+  color: #fff;
+  border-radius: 99px;
+  padding: 1px 7px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.funnel-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.funnel-card:hover { border-color: var(--gold); box-shadow: var(--shadow); transform: translateY(-1px); }
+.funnel-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.funnel-meta { font-size: 11px; color: var(--muted); }
+.funnel-amount { font-size: 12px; font-weight: 700; color: var(--green); margin-top: 4px; }
+
+/* CLIENT TABLE */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  text-align: left;
+  font-size: 11px; font-weight: 600; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.5px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+tbody td {
+  padding: 12px 12px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+tbody tr { cursor: pointer; transition: background 0.15s; }
+tbody tr:hover { background: var(--bg); }
+tbody tr:last-child td { border-bottom: none; }
+
+/* BADGE */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+.b-gold { background: var(--gold-bg); color: var(--gold); border-color: #e8c96044; }
+.b-green { background: var(--green-bg); color: var(--green); border-color: #1a7a5e33; }
+.b-red { background: var(--red-bg); color: var(--red); border-color: #c0392b33; }
+.b-blue { background: var(--blue-bg); color: var(--blue); border-color: #1a4a8a33; }
+.b-orange { background: var(--orange-bg); color: var(--orange); border-color: #c05a1a33; }
+.b-purple { background: var(--purple-bg); color: var(--purple); border-color: #5a2d8a33; }
+.b-gray { background: #f0f0f0; color: var(--muted); border-color: #ddd; }
+
+/* PROJECT CARD */
+.project-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 120px;
+  align-items: center;
+  gap: 16px;
+}
+.project-card:hover { border-color: var(--gold); box-shadow: var(--shadow); }
+.project-name { font-size: 14px; font-weight: 600; }
+.project-client { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* PROGRESS */
+.progress { background: var(--border); border-radius: 99px; height: 5px; overflow: hidden; margin-top: 4px; }
+.progress-fill { height: 100%; border-radius: 99px; transition: width 0.6s ease; }
+
+/* FINANCE ROW */
+.finance-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.finance-row:last-child { border-bottom: none; }
+.finance-info { flex: 1; }
+.finance-name { font-size: 13px; font-weight: 600; }
+.finance-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.finance-amount { font-size: 15px; font-weight: 700; }
+.finance-due { font-size: 11px; color: var(--muted); text-align: right; margin-top: 2px; }
+
+/* TEAM ACTIVITY */
+.activity-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.activity-item:last-child { border-bottom: none; }
+.activity-dot {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.activity-text { font-size: 13px; line-height: 1.4; }
+.activity-time { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+/* MODAL */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(17,17,24,0.5);
+  z-index: 200; backdrop-filter: blur(4px);
+  align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--white);
+  border-radius: 18px;
+  padding: 28px;
+  width: 520px; max-width: 95vw;
+  max-height: 90vh; overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  animation: fadeIn 0.2s ease;
+}
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.modal-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; }
+.modal-close { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; width: 30px; height: 30px; cursor: pointer; font-size: 16px; color: var(--muted); }
+.modal-section { margin-bottom: 16px; }
+.modal-section-title { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+.modal-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.modal-row:last-child { border-bottom: none; }
+.modal-row span:first-child { color: var(--muted); }
+.modal-row span:last-child { font-weight: 600; }
+
+/* STAGE TRACK */
+.stage-track { display: flex; gap: 0; margin: 16px 0; }
+.stage-step {
+  flex: 1; text-align: center; padding: 8px 4px;
+  font-size: 10px; font-weight: 600; color: var(--muted);
+  position: relative;
+}
+.stage-step::after {
+  content: ''; position: absolute;
+  top: 50%; right: -1px;
+  transform: translateY(-50%);
+  width: 0; height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+}
+.stage-step.done { background: var(--green-bg); color: var(--green); }
+.stage-step.active { background: var(--gold-bg); color: var(--gold); font-weight: 700; }
+.stage-step:first-child { border-radius: 6px 0 0 6px; }
+.stage-step:last-child { border-radius: 0 6px 6px 0; }
+
+/* ACTIONS */
+.modal-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+
+/* BTN */
+.btn {
+  border: none; border-radius: 9px; padding: 9px 18px;
+  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-gold { background: var(--gold); color: var(--ink); }
+.btn-gold:hover { background: #b8942a; transform: translateY(-1px); }
+.btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--ink); }
+.btn-outline:hover { border-color: var(--gold); }
+.btn-green { background: var(--green-bg); border: 1px solid #1a7a5e44; color: var(--green); }
+.btn-red { background: var(--red-bg); border: 1px solid #c0392b44; color: var(--red); }
+.btn-sm { padding: 5px 12px; font-size: 12px; border-radius: 7px; }
+
+/* NOTIF */
+.notif {
+  position: fixed; bottom: 24px; right: 24px; z-index: 300;
+  background: var(--ink); color: #fff;
+  padding: 12px 20px; border-radius: 12px;
+  font-size: 13px; font-weight: 600;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(60px); opacity: 0;
+  transition: all 0.3s ease; pointer-events: none;
+}
+.notif.show { transform: translateY(0); opacity: 1; }
+
+/* FILTERS */
+.filters { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.filter-btn {
+  padding: 6px 14px; border-radius: 99px;
+  border: 1.5px solid var(--border);
+  background: var(--white); color: var(--muted);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: all 0.15s;
+}
+.filter-btn:hover { border-color: var(--gold); color: var(--ink); }
+.filter-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+/* SECTION HEADER */
+.section-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+}
+.section-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; }
+
+/* ALERT BOX */
+.alert-box {
+  background: var(--red-bg);
+  border: 1px solid #c0392b22;
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+.alert-box-icon { font-size: 16px; flex-shrink: 0; }
+.alert-box-text { flex: 1; }
+.alert-box-btn { flex-shrink: 0; }
+
+select {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 9px; padding: 7px 12px;
+  font-family: 'Inter', sans-serif; font-size: 13px;
+  color: var(--ink); cursor: pointer;
+}
+
+/* EMPTY */
+.empty { text-align: center; padding: 40px; color: var(--muted); font-size: 14px; }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://gqsiezhmvbmepradqfgp.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_qy-pTdxxY1lnFJPjVVIYgA_xZ2W8l-Z';
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+let currentRole = null;
+let clients = [];
+let projects = [];
+let payments = [];
+
+// AUTH
+async function checkAuth() {
+  const { data: { session } } = await db.auth.getSession();
+  if (!session) { showLogin(); return; }
+  currentUser = session.user;
+  currentRole = session.user.user_metadata?.role || 'director';
+  hideLogin();
+  await initPortal();
+}
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+  if (!email || !password) { document.getElementById("loginError").textContent = "Введіть email і пароль"; return; }
+  const { data, error } = await db.auth.signInWithPassword({ email, password });
+  if (error) { document.getElementById("loginError").textContent = "Невірний email або пароль"; return; }
+  currentUser = data.user;
+  currentRole = data.user.user_metadata?.role || 'director';
+  hideLogin();
+  await initPortal();
+}
+
+async function doLogout() {
+  await db.auth.signOut();
+  showLogin();
+}
+
+function showLogin() {
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('appShell').style.display = 'none';
+}
+
+function hideLogin() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('appShell').style.display = 'flex';
+}
+
+// INIT
+async function initPortal() {
+  const name = currentUser.user_metadata?.full_name || currentUser.email.split('@')[0];
+  document.getElementById('userNameDisplay').textContent = name;
+  document.getElementById('userRoleDisplay').textContent = currentRole === 'director' ? 'Директор' : currentRole === 'integrator' ? 'Інтегратор' : 'Менеджер';
+  applyRoles();
+  await Promise.all([loadClients(), loadProjects(), loadPayments()]);
+  updateDashboard();
+}
+
+function applyRoles() {
+  if (currentRole === 'integrator') {
+    document.querySelectorAll('[data-hide-integrator]').forEach(el => el.style.display='none');
+  }
+  if (currentRole === 'manager') {
+    document.querySelectorAll('[data-hide-manager]').forEach(el => el.style.display='none');
+  }
+}
+
+// CLIENTS
+async function loadClients() {
+  const { data } = await db.from('clients').select('*').order('created_at', { ascending: false });
+  clients = data || [];
+  renderClients();
+}
+
+async function saveClient(formData) {
+  const { data, error } = await db.from('clients').insert([formData]).select();
+  if (error) { notify('Помилка: ' + error.message); return; }
+  clients.unshift(data[0]);
+  renderClients();
+  updateDashboard();
+  notify("Клієнта додано ✓");
+  closeModalDirect();
+}
+
+async function updateClientStatus(id, status) {
+  await db.from('clients').update({ status }).eq('id', id);
+  const c = clients.find(c => c.id == id);
+  if (c) c.status = status;
+  renderClients();
+  notify("Статус оновлено ✓");
+}
+
+function renderClients(filterStatus) {
+  var tbody = document.querySelector('#crmTable tbody');
+  if (!tbody) return;
+  var statusLabel = { lead:'Лід', consult:'Консультація', once:'Разовий', repeat:'Повторний', support:'На супроводі', archive:'Архів' };
+  var statusClass = { lead:'b-gray', consult:'b-orange', once:'b-gold', repeat:'b-blue', support:'b-green', archive:'b-gray' };
+  var list = (filterStatus && filterStatus !== 'all') ? clients.filter(function(c){ return c.status === filterStatus; }) : clients;
+  tbody.innerHTML = '';
+  if (!list.length) {
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td colspan="7" style="text-align:center;padding:32px;color:var(--muted)">Клієнтів поки немає</td>';
+    tbody.appendChild(tr);
+    return;
+  }
+  list.forEach(function(c) {
+    var tr = document.createElement('tr');
+    tr.setAttribute('data-status', c.status || '');
+    tr.style.cursor = 'pointer';
+    tr.addEventListener('click', function(){ openClientModal(c); });
+    var lbl = statusLabel[c.status] || c.status || '—';
+    var cls = statusClass[c.status] || 'b-gray';
+    var pct = formatDate(c.last_contact);
+    tr.innerHTML = '<td><div style="font-weight:600">' + c.name + '</div><div style="font-size:11px;color:var(--muted)">' + (c.niche||'—') + '</div></td>'
+      + '<td>' + (c.contact_name||'—') + '</td>'
+      + '<td><span class="badge b-blue">' + (c.niche||'—') + '</span></td>'
+      + '<td><span class="badge ' + cls + '">' + lbl + '</span></td>'
+      + '<td>' + (c.assigned_to||'Ірина Р.') + '</td>'
+      + '<td>' + pct + '</td>'
+      + '<td><button class="btn btn-sm btn-outline">Дія</button></td>';
+    tr.querySelector('button').addEventListener('click', function(e){ e.stopPropagation(); notify('OK'); });
+    tbody.appendChild(tr);
+  });
+}
+
+function openClientModal(c) {
+  if (typeof c === 'string') c = JSON.parse(c);
+  var statusUA = { lead:'Лід', consult:'Консультація', once:'Разовий клієнт', repeat:'Повторний', support:'На супроводі', archive:'Архів' };
+  var badgeMap = { lead:'b-gray', consult:'b-orange', once:'b-gold', repeat:'b-blue', support:'b-green', archive:'b-gray' };
+  var st = c.status || 'lead';
+  
+  document.getElementById('modalTitle').textContent = c.name;
+  var body = document.getElementById('modalBody');
+  body.innerHTML = '';
+
+  // Section 1: Contact info
+  var sec1 = document.createElement('div');
+  sec1.className = 'modal-section';
+  var t1 = document.createElement('div');
+  t1.className = 'modal-section-title';
+  t1.textContent = 'Контакт';
+  sec1.appendChild(t1);
+  [['Особа', c.contact_name], ['Email', c.email], ['Телефон', c.phone], ['Ніша', c.niche]].forEach(function(pair) {
+    var row = document.createElement('div');
+    row.className = 'modal-row';
+    var s1a = document.createElement('span'); s1a.textContent = pair[0];
+    var s1b = document.createElement('span'); s1b.textContent = pair[1] || '-';
+    row.appendChild(s1a); row.appendChild(s1b);
+    sec1.appendChild(row);
+  });
+  body.appendChild(sec1);
+
+  // Section 2: Status
+  var sec2 = document.createElement('div');
+  sec2.className = 'modal-section';
+  var t2 = document.createElement('div');
+  t2.className = 'modal-section-title';
+  t2.textContent = 'Змінити статус';
+  sec2.appendChild(t2);
+  var sel = document.createElement('select');
+  sel.style.cssText = 'width:100%;padding:9px 12px;border:1.5px solid #e8e4dc;border-radius:9px;font-size:14px;font-family:Inter,sans-serif';
+  Object.keys(statusUA).forEach(function(k) {
+    var opt = document.createElement('option');
+    opt.value = k;
+    opt.textContent = statusUA[k];
+    if (k === st) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  var cId = c.id;
+  sel.addEventListener('change', function() { updateClientStatus(cId, this.value); });
+  sec2.appendChild(sel);
+  body.appendChild(sec2);
+
+  // Actions
+  var actions = document.createElement('div');
+  actions.className = 'modal-actions';
+  var btn1 = document.createElement('button');
+  btn1.className = 'btn btn-gold';
+  btn1.textContent = 'Telegram';
+  btn1.addEventListener('click', function() { notify('OK'); closeModalDirect(); });
+  var btn2 = document.createElement('button');
+  btn2.className = 'btn btn-outline';
+  btn2.textContent = 'КП';
+  btn2.addEventListener('click', function() { notify('OK'); closeModalDirect(); });
+  actions.appendChild(btn1);
+  actions.appendChild(btn2);
+  body.appendChild(actions);
+
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function showAddClientForm() {
+  document.getElementById('modalTitle').textContent = 'Новий клієнт';
+  var body = document.getElementById('modalBody');
+  body.innerHTML = '';
+  
+  var sec = document.createElement('div');
+  sec.className = 'modal-section';
+  
+  var fields = [
+    {id:'fc_name', label:'Назва компанії', type:'text', ph:'Nova Digital'},
+    {id:'fc_contact', label:'Контактна особа', type:'text', ph:'Іван Іваненко'},
+    {id:'fc_phone', label:'Телефон', type:'tel', ph:'+380 67 123 4567'},
+    {id:'fc_email', label:'Email', type:'email', ph:'contact@company.ua'},
+    {id:'fc_niche', label:'Ніша', type:'text', ph:'IT, Beauty, HoReCa'}
+  ];
+  
+  fields.forEach(function(f) {
+    var wrap = document.createElement('div');
+    wrap.style.marginBottom = '12px';
+    var lbl = document.createElement('label');
+    lbl.style.cssText = 'font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px';
+    lbl.textContent = f.label;
+    var inp = document.createElement('input');
+    inp.id = f.id; inp.type = f.type; inp.placeholder = f.ph;
+    inp.style.cssText = 'width:100%;padding:9px 12px;border:1.5px solid #e8e4dc;border-radius:9px;font-family:Inter,sans-serif;font-size:14px';
+    wrap.appendChild(lbl); wrap.appendChild(inp);
+    sec.appendChild(wrap);
+  });
+  
+  var swrap = document.createElement('div');
+  swrap.style.marginBottom = '12px';
+  var slbl = document.createElement('label');
+  slbl.style.cssText = 'font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px';
+  slbl.textContent = 'Статус';
+  var sel = document.createElement('select');
+  sel.id = 'fc_status';
+  sel.style.cssText = 'width:100%;padding:9px 12px;border:1.5px solid #e8e4dc;border-radius:9px;font-family:Inter,sans-serif;font-size:14px';
+  [['lead','Лід'],['consult','Консультація'],['once','Разовий'],['support','На супроводі']].forEach(function(o) {
+    var opt = document.createElement('option');
+    opt.value = o[0]; opt.textContent = o[1];
+    sel.appendChild(opt);
+  });
+  swrap.appendChild(slbl); swrap.appendChild(sel);
+  sec.appendChild(swrap);
+  body.appendChild(sec);
+  
+  var actions = document.createElement('div');
+  actions.className = 'modal-actions';
+  var btn1 = document.createElement('button');
+  btn1.className = 'btn btn-gold'; btn1.textContent = 'Зберегти';
+  btn1.addEventListener('click', submitClient);
+  var btn2 = document.createElement('button');
+  btn2.className = 'btn btn-outline'; btn2.textContent = 'Скасувати';
+  btn2.addEventListener('click', closeModalDirect);
+  actions.appendChild(btn1); actions.appendChild(btn2);
+  body.appendChild(actions);
+  
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+async function submitClient() {
+  const name = document.getElementById('fc_name')?.value?.trim();
+  if (!name) { notify("Введіть назву"); return; }
+  await saveClient({ name, contact_name: document.getElementById('fc_contact')?.value, phone: document.getElementById('fc_phone')?.value, email: document.getElementById('fc_email')?.value, niche: document.getElementById('fc_niche')?.value, status: document.getElementById('fc_status')?.value || 'lead', last_contact: new Date().toISOString() });
+}
+
+// PROJECTS
+async function loadProjects() {
+  const { data } = await db.from('projects').select('*, clients(name)').order('created_at', { ascending: false });
+  projects = data || [];
+  renderProjectsList();
+}
+
+async function updateProjectStage(id, stage) {
+  const sp = {'ТЗ':10,'Аванс':20,'Розробка':50,'Тестування':80,'Здача':95,'Завершено':100};
+  await db.from('projects').update({ stage, progress: sp[stage]||0 }).eq('id', id);
+  const p = projects.find(p => p.id == id);
+  if (p) { p.stage = stage; p.progress = sp[stage]||0; }
+  renderProjectsList();
+  notify("Етап оновлено ✓");
+  closeModalDirect();
+}
+
+function renderProjectsList() {
+  const el = document.getElementById('projectsList');
+  if (!el) return;
+  const sc = {'ТЗ':'b-gray','Аналіз':'b-purple','Розробка':'b-blue','Тестування':'b-green','Здача':'b-gold','Завершено':'b-green'};
+  const bc = {'ТЗ':'#888','Аналіз':'var(--purple)','Розробка':'var(--blue)','Тестування':'var(--green)','Здача':'var(--gold)','Завершено':'var(--green)'};
+  el.innerHTML = projects.map(p => '<div class="project-card" onclick="openProjectModal(' + JSON.stringify(p).replace(/"/g,'&quot;') + ')"><div><div class="project-name">' + p.name + '</div><div class="project-client">' + (p.clients?.name||'—') + '</div></div><div><div style="font-size:12px;color:var(--muted);margin-bottom:4px">' + (p.progress||0) + '%</div><div class="progress"><div class="progress-fill" style="width:' + (p.progress||0) + '%;background:' + (bc[p.stage]||'var(--blue)') + '"></div></div></div><div><div style="font-size:13px;font-weight:600;color:var(--green)">' + (p.amount_paid?'$'+p.amount_paid+' ✓':'—') + '</div></div><div style="font-size:13px;font-weight:600">' + formatDate(p.deadline) + '</div><span class="badge ' + (sc[p.stage]||'b-gray') + '">' + (p.stage||'—') + '</span></div>').join('') || '<div style="text-align:center;padding:32px;color:var(--muted)">Проектів поки немає</div>';
+}
+
+function openProjectModal(p) {
+  if (typeof p === 'string') p = JSON.parse(p);
+  var stages = ['ТЗ','Аванс','Розробка','Тестування','Здача','Завершено'];
+  var idx = stages.indexOf(p.stage);
+  var clientName = (p.clients && p.clients.name) ? p.clients.name : p.name;
+  
+  document.getElementById('modalTitle').textContent = clientName;
+  var body = document.getElementById('modalBody');
+  body.innerHTML = '';
+  
+  // Details section
+  var sec1 = document.createElement('div');
+  sec1.className = 'modal-section';
+  var t1 = document.createElement('div');
+  t1.className = 'modal-section-title'; t1.textContent = 'Деталі';
+  sec1.appendChild(t1);
+  [['Проект', p.name], ['Прогрес', (p.progress||0) + '%'], ['Сума', '$' + (p.amount||0)]].forEach(function(pair) {
+    var row = document.createElement('div');
+    row.className = 'modal-row';
+    var s1 = document.createElement('span'); s1.textContent = pair[0];
+    var s2 = document.createElement('span'); s2.textContent = pair[1];
+    if (pair[0] === 'Сума') s2.style.color = 'var(--green)';
+    row.appendChild(s1); row.appendChild(s2);
+    sec1.appendChild(row);
+  });
+  body.appendChild(sec1);
+  
+  // Stage section
+  var sec2 = document.createElement('div');
+  sec2.className = 'modal-section';
+  var t2 = document.createElement('div');
+  t2.className = 'modal-section-title'; t2.textContent = 'Оновити етап';
+  sec2.appendChild(t2);
+  
+  var track = document.createElement('div');
+  track.className = 'stage-track';
+  stages.forEach(function(s, i) {
+    var step = document.createElement('div');
+    step.className = 'stage-step ' + (i < idx ? 'done' : i === idx ? 'active' : '');
+    step.textContent = s;
+    track.appendChild(step);
+  });
+  sec2.appendChild(track);
+  
+  var sel = document.createElement('select');
+  sel.style.cssText = 'width:100%;margin-top:10px;padding:9px 12px;border:1.5px solid #e8e4dc;border-radius:9px;font-family:Inter,sans-serif;font-size:14px';
+  var pId = p.id;
+  stages.forEach(function(s) {
+    var opt = document.createElement('option');
+    opt.value = s; opt.textContent = s;
+    if (s === p.stage) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  sel.addEventListener('change', function() { updateProjectStage(pId, this.value); });
+  sec2.appendChild(sel);
+  body.appendChild(sec2);
+  
+  // Actions
+  var actions = document.createElement('div');
+  actions.className = 'modal-actions';
+  var btn = document.createElement('button');
+  btn.className = 'btn btn-outline'; btn.textContent = 'Нотатка';
+  btn.addEventListener('click', function() { notify('OK'); closeModalDirect(); });
+  actions.appendChild(btn);
+  body.appendChild(actions);
+  
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+// PAYMENTS
+async function loadPayments() {
+  const { data } = await db.from('payments').select('*').order('due_date');
+  payments = data || [];
+}
+
+// DASHBOARD
+function updateDashboard() {
+  const active = projects.filter(p => p.stage !== 'Завершено').length;
+  const leads = clients.filter(c => c.status === 'lead' || c.status === 'consult').length;
+  const el1 = document.getElementById('dashProjects');
+  const el2 = document.getElementById('dashLeads');
+  if (el1) el1.textContent = active;
+  if (el2) el2.textContent = leads;
+}
+
+function formatDate(d) {
+  if (!d) return '—';
+  try { return new Date(d).toLocaleDateString('uk-UA', {day:'2-digit',month:'2-digit',year:'numeric'}); } catch(e) { return d; }
+}
+
+// FILTER
+function filterCRM(status, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderClients(status);
+  document.querySelectorAll('#crmTable tbody tr').forEach(tr => {
+    if (status === 'all') tr.style.display = '';
+  });
+}
+
+window.addEventListener('DOMContentLoaded', checkAuth);
+window._a = function(){ notify('Виконано'); };
+</script>
+</head>
+<body>
+<div id="loginScreen" style="display:none;position:fixed;inset:0;background:#f7f5f0;z-index:1000;align-items:center;justify-content:center">
+  <div style="background:#fff;border:1px solid #e8e4dc;border-radius:18px;padding:40px;width:380px;box-shadow:0 8px 40px rgba(17,17,24,0.12)">
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="display:inline-flex;align-items:center;gap:8px;background:#c9a84c;color:#111;border-radius:8px;padding:6px 12px;font-family:Syne,sans-serif;font-size:12px;font-weight:800;margin-bottom:12px">⚡ AI Agency</div>
+      <div style="font-family:Syne,sans-serif;font-size:20px;font-weight:800">ProPersonal Agency & AI</div>
+      <div style="font-size:13px;color:#888;margin-top:4px">Операційний портал</div>
+    </div>
+    <div style="margin-bottom:14px"><label style="font-size:12px;font-weight:600;color:#888;display:block;margin-bottom:4px">Email</label><input id="loginEmail" type="email" placeholder="your@email.com" style="width:100%;padding:10px 14px;border:1.5px solid #e8e4dc;border-radius:9px;font-family:Inter,sans-serif;font-size:14px"></div>
+    <div style="margin-bottom:20px"><label style="font-size:12px;font-weight:600;color:#888;display:block;margin-bottom:4px">Пароль</label><input id="loginPassword" type="password" placeholder="••••••••" style="width:100%;padding:10px 14px;border:1.5px solid #e8e4dc;border-radius:9px;font-family:Inter,sans-serif;font-size:14px" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div id="loginError" style="color:#c0392b;font-size:12px;margin-bottom:12px;min-height:16px"></div>
+    <button onclick="doLogin()" style="width:100%;background:#c9a84c;color:#111;border:none;border-radius:9px;padding:12px;font-family:Inter,sans-serif;font-size:15px;font-weight:700;cursor:pointer">Увійти →</button>
+  </div>
+</div>
+
+
+<div class="notif" id="notif"></div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle"></div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<div id="appShell" style="display:none;width:100%;min-height:100vh;display:none"><aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-badge">⚡ AI Agency</div>
+    <div class="logo-name">ProPersonal<br>Agency & AI</div>
+    <div class="logo-sub">Операційний портал</div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">Головне</div>
+    <button class="nav-item active" onclick="showPage('dashboard',this)">
+      <span class="nav-icon">🏠</span> Дашборд
+    </button>
+
+    <div class="nav-section">Продажі</div>
+    <button class="nav-item" onclick="showPage('crm',this)">
+      <span class="nav-icon">👥</span> CRM / Клієнти
+      <span class="nav-badge">2</span>
+    </button>
+    <button class="nav-item" onclick="showPage('funnel',this)">
+      <span class="nav-icon">📊</span> Воронка продажів
+    </button>
+
+    <div class="nav-section">Робота</div>
+    <button class="nav-item" onclick="showPage('projects',this)">
+      <span class="nav-icon">🚀</span> Проекти
+      <span class="nav-badge">4</span>
+    </button>
+    <button class="nav-item" onclick="showPage('finance',this)">
+      <span class="nav-icon">💰</span> Фінанси
+    </button>
+
+    <div class="nav-section">Команда</div>
+    <button class="nav-item" onclick="showPage('team',this)">
+      <span class="nav-icon">👤</span> Команда
+    </button>
+  </nav>
+
+  <div class="sidebar-user">
+    <div class="user-avatar">ІР</div>
+    <div>
+      <div class="user-name" id="userNameDisplay">...</div>
+      <div class="user-role" id="userRoleDisplay">...</div>
+    </div>
+  <button class="nav-item" onclick="doLogout()" style="margin-top:auto;color:#ef4444"><span class="nav-icon">🚪</span> Вийти</button>
+</div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbarTitle">Дашборд</div>
+    <div class="topbar-right">
+      <div class="topbar-date">П'ятниця, 29 травня 2026</div>
+      <button class="btn btn-gold btn-sm" onclick="showAddClientForm()">+ Додати</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="page active" id="page-dashboard">
+
+      <!-- ALERTS -->
+      <div class="alert-box">
+        <div class="alert-box-icon">⚠️</div>
+        <div class="alert-box-text"><strong>Очікується платіж:</strong> Nova Digital — залишок $1 500 до 31.05</div>
+        <button class="btn btn-sm btn-red alert-box-btn" onclick="notify("Нагадування надіслано клієнту ✓")">Нагадати</button>
+      </div>
+      <div class="alert-box" style="background:var(--gold-bg);border-color:#c9a84c33">
+        <div class="alert-box-icon">🔥</div>
+        <div class="alert-box-text"><strong>Гарячий лід:</strong> Beauty Studio — чекає КП вже 2 дні</div>
+        <button class="btn btn-sm btn-gold alert-box-btn" onclick="notify("Перехід до картки ліда ✓")">Переглянути</button>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat">
+          <div class="stat-top">
+            <div class="stat-icon" style="background:var(--gold-bg)">💰</div>
+            <span class="stat-trend trend-up">↑ цей міс</span>
+          </div>
+          <div class="stat-val">$8 200</div>
+          <div class="stat-label">Виручка травень</div>
+        </div>
+        <div class="stat">
+          <div class="stat-top">
+            <div class="stat-icon" style="background:var(--blue-bg)">🚀</div>
+            <span class="stat-trend trend-up">4 активних</span>
+          </div>
+          <div class="stat-val" id="dashProjects">—</div>
+          <div class="stat-label">Проекти в роботі</div>
+        </div>
+        <div class="stat">
+          <div class="stat-top">
+            <div class="stat-icon" style="background:var(--orange-bg)">📥</div>
+            <span class="stat-trend trend-up">↑ +3</span>
+          </div>
+          <div class="stat-val" id="dashLeads">—</div>
+          <div class="stat-label">Лідів у воронці</div>
+        </div>
+        <div class="stat">
+          <div class="stat-top">
+            <div class="stat-icon" style="background:var(--red-bg)">⏳</div>
+            <span class="stat-trend trend-down">Увага</span>
+          </div>
+          <div class="stat-val">$3 000</div>
+          <div class="stat-label">Очікується оплат</div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <!-- ACTIVE PROJECTS -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🚀 Активні проекти</div>
+            <button class="card-action" onclick="showPage('projects', document.querySelector('[onclick*=projects]'))">Всі →</button>
+          </div>
+          <div onclick="openProject('Nova Digital','Telegram-бот лідогенерації','Розробка',70,'$3 000')" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer">
+            <div style="width:36px;height:36px;border-radius:8px;background:var(--blue-bg);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">🤖</div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600">Nova Digital</div>
+              <div style="font-size:11px;color:var(--muted)">Telegram-бот лідогенерації</div>
+              <div class="progress" style="margin-top:6px"><div class="progress-fill" style="width:70%;background:var(--blue)"></div></div>
+            </div>
+            <span class="badge b-blue">Розробка</span>
+          </div>
+          <div onclick="openProject('Beauty Studio','CRM-автоматизація','Аналіз',30,'$2 200')" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer">
+            <div style="width:36px;height:36px;border-radius:8px;background:var(--purple-bg);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">💅</div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600">Beauty Studio</div>
+              <div style="font-size:11px;color:var(--muted)">CRM-автоматизація</div>
+              <div class="progress" style="margin-top:6px"><div class="progress-fill" style="width:30%;background:var(--purple)"></div></div>
+            </div>
+            <span class="badge b-purple">Аналіз</span>
+          </div>
+          <div onclick="openProject('TechHub','n8n автоматизація процесів','Тестування',85,'$1 800')" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer">
+            <div style="width:36px;height:36px;border-radius:8px;background:var(--green-bg);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">⚙️</div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600">TechHub</div>
+              <div style="font-size:11px;color:var(--muted)">n8n автоматизація процесів</div>
+              <div class="progress" style="margin-top:6px"><div class="progress-fill" style="width:85%;background:var(--green)"></div></div>
+            </div>
+            <span class="badge b-green">Тестування</span>
+          </div>
+          <div onclick="openProject('MedClinic','AI-агент для запису','Здача',95,'$2 500')" style="display:flex;align-items:center;gap:12px;padding:10px 0;cursor:pointer">
+            <div style="width:36px;height:36px;border-radius:8px;background:var(--gold-bg);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">🏥</div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600">MedClinic</div>
+              <div style="font-size:11px;color:var(--muted)">AI-агент для запису</div>
+              <div class="progress" style="margin-top:6px"><div class="progress-fill" style="width:95%;background:var(--gold)"></div></div>
+            </div>
+            <span class="badge b-gold">Здача</span>
+          </div>
+        </div>
+
+        <!-- FINANCE SNAPSHOT -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">💰 Платежі</div>
+            <button class="card-action" onclick="showPage('finance', document.querySelector('[onclick*=finance]'))">Всі →</button>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+            <div style="background:var(--green-bg);border-radius:10px;padding:14px;text-align:center">
+              <div style="font-size:11px;color:var(--green);font-weight:600;margin-bottom:4px">ОТРИМАНО</div>
+              <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--green)">$5 200</div>
+            </div>
+            <div style="background:var(--orange-bg);border-radius:10px;padding:14px;text-align:center">
+              <div style="font-size:11px;color:var(--orange);font-weight:600;margin-bottom:4px">ОЧІКУЄТЬСЯ</div>
+              <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--orange)">$3 000</div>
+            </div>
+          </div>
+          <div class="finance-row">
+            <div class="finance-info">
+              <div class="finance-name">Nova Digital — залишок</div>
+              <div class="finance-meta">50% після тестування</div>
+            </div>
+            <div>
+              <div class="finance-amount" style="color:var(--red)">$1 500</div>
+              <div class="finance-due">до 31.05 ⚠️</div>
+            </div>
+          </div>
+          <div class="finance-row">
+            <div class="finance-info">
+              <div class="finance-name">MedClinic — залишок</div>
+              <div class="finance-meta">50% після здачі</div>
+            </div>
+            <div>
+              <div class="finance-amount" style="color:var(--orange)">$1 250</div>
+              <div class="finance-due">до 05.06</div>
+            </div>
+          </div>
+          <div class="finance-row">
+            <div class="finance-info">
+              <div class="finance-name">Beauty Studio — аванс</div>
+              <div class="finance-meta">50% передоплата</div>
+            </div>
+            <div>
+              <div class="finance-amount" style="color:var(--orange)">$250</div>
+              <div class="finance-due">до 10.06</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEAM ACTIVITY -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">👥 Активність команди вчора</div>
+        </div>
+        <div class="grid2">
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px">📱 Менеджер продажів</div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--blue-bg)">📞</div>
+              <div><div class="activity-text">Дзвінок з Beauty Spa — зацікавлені в автоматизації Telegram</div><div class="activity-time">14:30</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--green-bg)">✉️</div>
+              <div><div class="activity-text">Новий лід: RestChain — мережа ресторанів, запит на CRM</div><div class="activity-time">16:15</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--gold-bg)">📊</div>
+              <div><div class="activity-text">Відправлено КП Beauty Studio після уточнень</div><div class="activity-time">18:00</div></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px">⚙️ Інтегратор</div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--blue-bg)">🤖</div>
+              <div><div class="activity-text">Nova Digital: завершено модуль кваліфікації лідів у боті</div><div class="activity-time">11:00</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--green-bg)">✅</div>
+              <div><div class="activity-text">TechHub: тестування n8n воркфлоу — 3 з 4 сценаріїв ОК</div><div class="activity-time">15:45</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--orange-bg)">⚠️</div>
+              <div><div class="activity-text">MedClinic: проблема з API клініки, потрібні дані від клієнта</div><div class="activity-time">17:20</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CRM ===== -->
+    <div class="page" id="page-crm">
+      <div class="filters">
+        <button class="filter-btn active" onclick="filterCRM('all',this)">Всі клієнти</button>
+        <button class="filter-btn" onclick="filterCRM('lead',this)">Ліди</button>
+        <button class="filter-btn" onclick="filterCRM('consult',this)">Консультація</button>
+        <button class="filter-btn" onclick="filterCRM('once',this)">Разовий</button>
+        <button class="filter-btn" onclick="filterCRM('repeat',this)">Повторний</button>
+        <button class="filter-btn" onclick="filterCRM('support',this)">На супроводі</button>
+        <button class="filter-btn" onclick="filterCRM('archive',this)">Архів</button>
+      </div>
+
+      <div class="card" style="padding:0;overflow:hidden">
+        <div class="table-wrap">
+          <table id="crmTable">
+            <thead>
+              <tr>
+                <th>Компанія</th>
+                <th>Контакт</th>
+                <th>Ніша</th>
+                <th>Статус</th>
+                <th>Відповідальний</th>
+                <th>Останній контакт</th>
+                <th>Дія</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-status="support" onclick="openClient('Nova Digital','Олег Бондаренко','nova@digital.ua','+380 67 111 2233','Fintech','support','Telegram-бот + CRM інтеграція','$3 000')">
+                <td><div style="font-weight:600">Nova Digital</div><div style="font-size:11px;color:var(--muted)">fintech стартап</div></td>
+                <td>Олег Бондаренко</td>
+                <td><span class="badge b-blue">Fintech</span></td>
+                <td><span class="badge b-green">На супроводі</span></td>
+                <td>Ірина Р.</td>
+                <td>Сьогодні</td>
+                <td><button class="btn btn-sm btn-outline" onclick="event.stopPropagation();notify("Чат відкрито ✓")">Написати</button></td>
+              </tr>
+              <tr data-status="once" onclick="openClient('MedClinic','Наталія Стець','med@clinic.ua','+380 50 222 3344','Медицина','once','AI-агент для запису пацієнтів','$2 500')">
+                <td><div style="font-weight:600">MedClinic</div><div style="font-size:11px;color:var(--muted)">приватна клініка</div></td>
+                <td>Наталія Стець</td>
+                <td><span class="badge b-green">Медицина</span></td>
+                <td><span class="badge b-gold">Разовий</span></td>
+                <td>Ірина Р.</td>
+                <td>Вчора</td>
+                <td><button class="btn btn-sm btn-outline" onclick="event.stopPropagation();notify("Чат відкрито ✓")">Написати</button></td>
+              </tr>
+              <tr data-status="once" onclick="openClient('TechHub','Андрій Лисенко','tech@hub.ua','+380 93 333 4455','IT','once','n8n автоматизація','$1 800')">
+                <td><div style="font-weight:600">TechHub</div><div style="font-size:11px;color:var(--muted)">IT компанія</div></td>
+                <td>Андрій Лисенко</td>
+                <td><span class="badge b-blue">IT</span></td>
+                <td><span class="badge b-gold">Разовий</span></td>
+                <td>Ірина Р.</td>
+                <td>2 дні тому</td>
+                <td><button class="btn btn-sm btn-outline" onclick="event.stopPropagation();notify("Чат відкрито ✓")">Написати</button></td>
+              </tr>
+              <tr data-status="consult" onclick="openClient('Beauty Studio','Марина Коваль','beauty@studio.ua','+380 66 444 5566','Beauty','consult','CRM-автоматизація','$2 200')">
+                <td><div style="font-weight:600">Beauty Studio</div><div style="font-size:11px;color:var(--muted)">мережа салонів</div></td>
+                <td>Марина Коваль</td>
+                <td><span class="badge b-purple">Beauty</span></td>
+                <td><span class="badge b-orange">Консультація</span></td>
+                <td>Менеджер</td>
+                <td>3 дні тому</td>
+                <td><button class="btn btn-sm btn-gold" onclick="event.stopPropagation();notify("КП відправлено ✓")">Відправити КП</button></td>
+              </tr>
+              <tr data-status="lead" onclick="openClient('RestChain','Дмитро Павлов','rest@chain.ua','+380 97 555 6677','HoReCa','lead','CRM для мережі','—')">
+                <td><div style="font-weight:600">RestChain</div><div style="font-size:11px;color:var(--muted)">мережа ресторанів</div></td>
+                <td>Дмитро Павлов</td>
+                <td><span class="badge b-orange">HoReCa</span></td>
+                <td><span class="badge b-gray">Лід</span></td>
+                <td>Менеджер</td>
+                <td>Сьогодні</td>
+                <td><button class="btn btn-sm btn-outline" onclick="event.stopPropagation();notify("Призначено дзвінок ✓")">Дзвінок</button></td>
+              </tr>
+              <tr data-status="lead" onclick="openClient('Beauty Spa','Олена Яремченко','spa@beauty.ua','+380 63 666 7788','Beauty','lead','Telegram автоматизація','—')">
+                <td><div style="font-weight:600">Beauty Spa</div><div style="font-size:11px;color:var(--muted)">спа-салон</div></td>
+                <td>Олена Яремченко</td>
+                <td><span class="badge b-purple">Beauty</span></td>
+                <td><span class="badge b-gray">Лід</span></td>
+                <td>Менеджер</td>
+                <td>Вчора</td>
+                <td><button class="btn btn-sm btn-outline" onclick="event.stopPropagation();notify("Призначено дзвінок ✓")">Дзвінок</button></td>
+              </tr>
+              <tr data-status="archive" onclick="openClient('OldClient','Іван Петров','old@client.ua','+380 50 000 1111','Торгівля','archive','Консультація (не замовив)','—')">
+                <td><div style="font-weight:600">OldClient LLC</div><div style="font-size:11px;color:var(--muted)">торгова компанія</div></td>
+                <td>Іван Петров</td>
+                <td><span class="badge b-gray">Торгівля</span></td>
+                <td><span class="badge b-gray">Архів</span></td>
+                <td>—</td>
+                <td>2 міс. тому</td>
+                <td><button class="btn btn-sm btn-outline" onclick="event.stopPropagation();notify("Реактивація запущена ✓")">Реактивувати</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FUNNEL ===== -->
+    <div class="page" id="page-funnel">
+      <div style="margin-bottom:20px">
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px">
+          <div style="background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center">
+            <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:4px">ЛІДИ</div>
+            <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800">3</div>
+          </div>
+          <div style="background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center">
+            <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:4px">КОНСУЛЬТАЦІЯ</div>
+            <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800">2</div>
+          </div>
+          <div style="background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center">
+            <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:4px">КП ВІДПРАВЛЕНО</div>
+            <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800">1</div>
+          </div>
+          <div style="background:var(--green-bg);border:1px solid #1a7a5e22;border-radius:10px;padding:12px;text-align:center">
+            <div style="font-size:11px;color:var(--green);font-weight:600;margin-bottom:4px">ЗАКРИТО ✓</div>
+            <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--green)">4</div>
+          </div>
+          <div style="background:var(--red-bg);border:1px solid #c0392b22;border-radius:10px;padding:12px;text-align:center">
+            <div style="font-size:11px;color:var(--red);font-weight:600;margin-bottom:4px">ПРОГРАНО</div>
+            <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--red)">2</div>
+          </div>
+        </div>
+        <div style="background:var(--gold-bg);border:1px solid #c9a84c33;border-radius:10px;padding:12px;font-size:13px;color:var(--orange)">
+          <strong>Конверсія:</strong> 3 ліди → 4 закриті угоди (цього місяця). Вузьке горлечко: <strong>КП → Закрито</strong> — 1 з 2 КП підписано.
+        </div>
+      </div>
+
+      <div class="funnel">
+        <div class="funnel-col">
+          <div class="funnel-header">Ліди <span class="funnel-count">3</span></div>
+          <div class="funnel-card" onclick="openClient('RestChain','Дмитро Павлов','rest@chain.ua','+380 97 555 6677','HoReCa','lead','CRM для мережі','—')">
+            <div class="funnel-name">RestChain</div>
+            <div class="funnel-meta">Менеджер · Сьогодні</div>
+          </div>
+          <div class="funnel-card" onclick="openClient('Beauty Spa','Олена Яремченко','spa@beauty.ua','+380 63 666 7788','Beauty','lead','Telegram автоматизація','—')">
+            <div class="funnel-name">Beauty Spa</div>
+            <div class="funnel-meta">Менеджер · Вчора</div>
+          </div>
+          <div class="funnel-card">
+            <div class="funnel-name">FitClub Kyiv</div>
+            <div class="funnel-meta">Менеджер · 3 дні тому</div>
+          </div>
+        </div>
+        <div class="funnel-col">
+          <div class="funnel-header">Консультація <span class="funnel-count">2</span></div>
+          <div class="funnel-card" onclick="openClient('Beauty Studio','Марина Коваль','beauty@studio.ua','+380 66 444 5566','Beauty','consult','CRM-автоматизація','$2 200')">
+            <div class="funnel-name">Beauty Studio</div>
+            <div class="funnel-meta">Ірина · 3 дні тому</div>
+            <div class="funnel-amount">~$2 200</div>
+          </div>
+          <div class="funnel-card">
+            <div class="funnel-name">LogisticsPro</div>
+            <div class="funnel-meta">Ірина · Тиждень тому</div>
+            <div class="funnel-amount">~$3 500</div>
+          </div>
+        </div>
+        <div class="funnel-col">
+          <div class="funnel-header">КП відправлено <span class="funnel-count">1</span></div>
+          <div class="funnel-card" style="border-color:var(--gold)">
+            <div class="funnel-name">Beauty Studio</div>
+            <div class="funnel-meta" style="color:var(--red)">⚠️ Чекає 2 дні</div>
+            <div class="funnel-amount">$2 200</div>
+          </div>
+        </div>
+        <div class="funnel-col">
+          <div class="funnel-header" style="color:var(--green)">Закрито ✓ <span class="funnel-count" style="background:var(--green)">4</span></div>
+          <div class="funnel-card" style="background:var(--green-bg);border-color:#1a7a5e22">
+            <div class="funnel-name">Nova Digital</div>
+            <div class="funnel-meta">Квітень 2026</div>
+            <div class="funnel-amount">$3 000</div>
+          </div>
+          <div class="funnel-card" style="background:var(--green-bg);border-color:#1a7a5e22">
+            <div class="funnel-name">MedClinic</div>
+            <div class="funnel-meta">Квітень 2026</div>
+            <div class="funnel-amount">$2 500</div>
+          </div>
+          <div class="funnel-card" style="background:var(--green-bg);border-color:#1a7a5e22">
+            <div class="funnel-name">TechHub</div>
+            <div class="funnel-meta">Травень 2026</div>
+            <div class="funnel-amount">$1 800</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PROJECTS ===== -->
+    <div class="page" id="page-projects">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
+        <div style="background:var(--blue-bg);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:11px;color:var(--blue);font-weight:600;margin-bottom:4px">АНАЛІЗ / ТЗ</div>
+          <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--blue)">1</div>
+        </div>
+        <div style="background:var(--purple-bg);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:11px;color:var(--purple);font-weight:600;margin-bottom:4px">РОЗРОБКА</div>
+          <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--purple)">2</div>
+        </div>
+        <div style="background:var(--orange-bg);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:11px;color:var(--orange);font-weight:600;margin-bottom:4px">ТЕСТУВАННЯ</div>
+          <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--orange)">1</div>
+        </div>
+        <div style="background:var(--gold-bg);border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:11px;color:var(--gold);font-weight:600;margin-bottom:4px">ЗДАЧА</div>
+          <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--gold)">1</div>
+        </div>
+      </div>
+
+      <div id="projectsList"></div>
+      <div style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;padding:0 0 8px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr 120px;gap:16px;padding:0 20px 8px">
+        <span>Проект / Клієнт</span><span>Прогрес</span><span>Оплата</span><span>Дедлайн</span><span>Статус</span>
+      </div>
+
+      <div class="project-card" onclick="openProject('Nova Digital','Telegram-бот лідогенерації','Розробка',70,'$3 000')">
+        <div><div class="project-name">Telegram-бот лідогенерації</div><div class="project-client">Nova Digital · Інтегратор: Олексій</div></div>
+        <div><div style="font-size:12px;color:var(--muted);margin-bottom:4px">70%</div><div class="progress"><div class="progress-fill" style="width:70%;background:var(--blue)"></div></div></div>
+        <div><div style="font-size:13px;font-weight:600;color:var(--green)">$1 500 ✓</div><div style="font-size:11px;color:var(--orange)">$1 500 очік.</div></div>
+        <div style="font-size:13px;font-weight:600">05.06.2026</div>
+        <span class="badge b-blue">Розробка</span>
+      </div>
+
+      <div class="project-card" onclick="openProject('Beauty Studio','CRM-автоматизація','Аналіз',30,'$2 200')">
+        <div><div class="project-name">CRM-автоматизація</div><div class="project-client">Beauty Studio · Інтегратор: Олексій</div></div>
+        <div><div style="font-size:12px;color:var(--muted);margin-bottom:4px">30%</div><div class="progress"><div class="progress-fill" style="width:30%;background:var(--purple)"></div></div></div>
+        <div><div style="font-size:13px;font-weight:600;color:var(--green)">$1 100 ✓</div><div style="font-size:11px;color:var(--orange)">$1 100 очік.</div></div>
+        <div style="font-size:13px;font-weight:600">20.06.2026</div>
+        <span class="badge b-purple">Аналіз</span>
+      </div>
+
+      <div class="project-card" onclick="openProject('TechHub','n8n автоматизація процесів','Тестування',85,'$1 800')">
+        <div><div class="project-name">n8n автоматизація процесів</div><div class="project-client">TechHub · Інтегратор: Олексій</div></div>
+        <div><div style="font-size:12px;color:var(--muted);margin-bottom:4px">85%</div><div class="progress"><div class="progress-fill" style="width:85%;background:var(--green)"></div></div></div>
+        <div><div style="font-size:13px;font-weight:600;color:var(--green)">$900 ✓</div><div style="font-size:11px;color:var(--orange)">$900 очік.</div></div>
+        <div style="font-size:13px;font-weight:600">01.06.2026</div>
+        <span class="badge b-green">Тестування</span>
+      </div>
+
+      <div class="project-card" onclick="openProject('MedClinic','AI-агент для запису','Здача',95,'$2 500')">
+        <div><div class="project-name">AI-агент для запису пацієнтів</div><div class="project-client">MedClinic · Інтегратор: Олексій</div></div>
+        <div><div style="font-size:12px;color:var(--muted);margin-bottom:4px">95%</div><div class="progress"><div class="progress-fill" style="width:95%;background:var(--gold)"></div></div></div>
+        <div><div style="font-size:13px;font-weight:600;color:var(--green)">$1 250 ✓</div><div style="font-size:11px;color:var(--orange)">$1 250 очік.</div></div>
+        <div style="font-size:13px;font-weight:600">31.05.2026</div>
+        <span class="badge b-gold">Здача</span>
+      </div>
+    </div>
+
+    <!-- ===== FINANCE ===== -->
+    <div class="page" id="page-finance">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px">
+        <div class="stat">
+          <div class="stat-top"><div class="stat-icon" style="background:var(--green-bg)">💵</div><span class="stat-trend trend-up">травень</span></div>
+          <div class="stat-val" style="color:var(--green)">$5 200</div>
+          <div class="stat-label">Отримано</div>
+        </div>
+        <div class="stat">
+          <div class="stat-top"><div class="stat-icon" style="background:var(--orange-bg)">⏳</div><span class="stat-trend" style="background:var(--orange-bg);color:var(--orange)">очікується</span></div>
+          <div class="stat-val" style="color:var(--orange)">$3 000</div>
+          <div class="stat-label">До отримання</div>
+        </div>
+        <div class="stat">
+          <div class="stat-top"><div class="stat-icon" style="background:var(--blue-bg)">📈</div><span class="stat-trend trend-up">всього</span></div>
+          <div class="stat-val">$8 200</div>
+          <div class="stat-label">Контрактів травень</div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <div class="card-header"><div class="card-title">✅ Отримані платежі</div></div>
+          <div class="finance-row">
+            <div class="finance-info"><div class="finance-name">Nova Digital — аванс 50%</div><div class="finance-meta">Telegram-бот · 05.05.2026</div></div>
+            <div><div class="finance-amount" style="color:var(--green)">+$1 500</div></div>
+          </div>
+          <div class="finance-row">
+            <div class="finance-info"><div class="finance-name">MedClinic — аванс 50%</div><div class="finance-meta">AI-агент · 10.05.2026</div></div>
+            <div><div class="finance-amount" style="color:var(--green)">+$1 250</div></div>
+          </div>
+          <div class="finance-row">
+            <div class="finance-info"><div class="finance-name">TechHub — аванс 50%</div><div class="finance-meta">n8n автоматизація · 15.05.2026</div></div>
+            <div><div class="finance-amount" style="color:var(--green)">+$900</div></div>
+          </div>
+          <div class="finance-row">
+            <div class="finance-info"><div class="finance-name">Beauty Studio — аванс 50%</div><div class="finance-meta">CRM · 20.05.2026</div></div>
+            <div><div class="finance-amount" style="color:var(--green)">+$1 100</div></div>
+          </div>
+          <div class="finance-row">
+            <div class="finance-info"><div class="finance-name">OldClient — повна оплата</div><div class="finance-meta">Консультація · 02.05.2026</div></div>
+            <div><div class="finance-amount" style="color:var(--green)">+$450</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">⏳ Очікувані платежі</div></div>
+          <div class="finance-row">
+            <div class="finance-info"><div class="finance-name">Nova Digital — залишок 50%</div><div class="finance-meta">Після тестування</div></div>
+            <div>
+              <div class="finance-amount" style="color:var(--red)">$1 500</div>
+              <div class="finance-due">до 31.05 ⚠️</div>
+            </div>
+          </div>
+          <div class="finance-row">
+            <div class="finance-info"><div class="finance-name">MedClinic — залишок 50%</div><div class="finance-meta">Після здачі проекту</div></div>
+            <div>
+              <div class="finance-amount" style="color:var(--orange)">$1 250</div>
+              <div class="finance-due">до 05.06</div>
+            </div>
+          </div>
+          <div class="finance-row">
+            <div class="finance-info"><div class="finance-name">TechHub — залишок 50%</div><div class="finance-meta">Після тестування</div></div>
+            <div>
+              <div class="finance-amount" style="color:var(--orange)">$900</div>
+              <div class="finance-due">до 10.06</div>
+            </div>
+          </div>
+          <div class="finance-row">
+            <div class="finance-info"><div class="finance-name">Beauty Studio — залишок 50%</div><div class="finance-meta">Після здачі</div></div>
+            <div>
+              <div class="finance-amount" style="color:var(--muted)">$1 100</div>
+              <div class="finance-due">до 25.06</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">👥 Зарплата команди</div></div>
+        <div class="finance-row">
+          <div class="finance-info">
+            <div class="finance-name">Олексій — Інтегратор</div>
+            <div class="finance-meta">Фіксована ставка · 3 проекти (норма виконана)</div>
+          </div>
+          <div>
+            <div class="finance-amount" style="color:var(--ink)">40 000 ₴</div>
+            <div class="finance-due">до 05.06</div>
+          </div>
+        </div>
+        <div class="finance-row">
+          <div class="finance-info">
+            <div class="finance-name">Менеджер продажів</div>
+            <div class="finance-meta">Фіксована ставка + % від угод</div>
+          </div>
+          <div>
+            <div class="finance-amount" style="color:var(--ink)">25 000 ₴</div>
+            <div class="finance-due">до 05.06</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TEAM ===== -->
+    <div class="page" id="page-team">
+      <div class="grid2">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">📱 Менеджер продажів</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:2px">Дистанційно · Онлайн</div>
+            </div>
+            <span class="badge b-green">● Активний</span>
+          </div>
+          <div class="modal-row"><span>Ліди цього місяця</span><span style="color:var(--green);font-weight:700">7 лідів</span></div>
+          <div class="modal-row"><span>Конвертовано в КП</span><span>3 з 7</span></div>
+          <div class="modal-row"><span>Канал комунікації</span><span>Telegram</span></div>
+          <div class="modal-row"><span>Активних завдань</span><span>4</span></div>
+          <div style="margin-top:16px">
+            <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px">Активність вчора</div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--blue-bg)">📞</div>
+              <div><div class="activity-text">Дзвінок Beauty Spa — зацікавлені</div><div class="activity-time">14:30</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--green-bg)">✉️</div>
+              <div><div class="activity-text">Новий лід: RestChain</div><div class="activity-time">16:15</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--gold-bg)">📊</div>
+              <div><div class="activity-text">Відправлено КП Beauty Studio</div><div class="activity-time">18:00</div></div>
+            </div>
+          </div>
+          <div style="margin-top:14px">
+            <button class="btn btn-outline" style="width:100%" onclick="notify("Telegram відкрито ✓")">✉️ Написати в Telegram</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">⚙️ Інтегратор (Олексій)</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:2px">Дистанційно · В роботі</div>
+            </div>
+            <span class="badge b-gold">● В роботі</span>
+          </div>
+          <div class="modal-row"><span>Проекти цього місяця</span><span style="color:var(--blue);font-weight:700">3 активних</span></div>
+          <div class="modal-row"><span>На супроводі</span><span>1 проект</span></div>
+          <div class="modal-row"><span>Ставка виконана</span><span style="color:var(--green)">✓ Так</span></div>
+          <div class="modal-row"><span>Зарплата</span><span>40 000 ₴ / міс</span></div>
+          <div style="margin-top:16px">
+            <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px">Активність вчора</div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--blue-bg)">🤖</div>
+              <div><div class="activity-text">Nova Digital: завершено модуль кваліфікації</div><div class="activity-time">11:00</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--green-bg)">✅</div>
+              <div><div class="activity-text">TechHub: тестування — 3/4 сценаріїв ОК</div><div class="activity-time">15:45</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--orange-bg)">⚠️</div>
+              <div><div class="activity-text">MedClinic: проблема з API — потрібні дані</div><div class="activity-time">17:20</div></div>
+            </div>
+          </div>
+          <div style="margin-top:14px">
+            <button class="btn btn-outline" style="width:100%" onclick="notify("Telegram відкрито ✓")">✉️ Написати в Telegram</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const titles = {
+  dashboard:'Дашборд',crm:'CRM / Клієнти',
+  funnel:'Воронка продажів',projects:'Проекти',
+  finance:'Фінанси',team:'Команда'
+};
+
+function showPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  if(btn) btn.classList.add('active');
+  document.getElementById('topbarTitle').textContent = titles[name]||name;
+}
+
+function notify(msg) {
+  const n=document.getElementById('notif');
+  n.textContent=msg; n.classList.add('show');
+  setTimeout(()=>n.classList.remove('show'),2800);
+}
+
+function closeModal(e){if(e.target===document.getElementById('modalOverlay'))closeModalDirect();}
+function closeModalDirect(){document.getElementById('modalOverlay').classList.remove('open');}
+
+function openClient(name,contact,email,phone,niche,status,project,amount){
+  const statusMap={
+    lead:'Лід',consult:'Консультація',once:'Разовий клієнт',
+    repeat:'Повторний клієнт',support:'На супроводі',archive:'Архів'
+  };
+  const badgeMap={
+    lead:'b-gray',consult:'b-orange',once:'b-gold',
+    repeat:'b-blue',support:'b-green',archive:'b-gray'
+  };
+  document.getElementById('modalTitle').textContent='👥 '+name;
+  document.getElementById('modalBody').innerHTML=`
+    <div class="modal-section">
+      <div class="modal-section-title">Контактна інформація</div>
+      <div class="modal-row"><span>Контактна особа</span><span>${contact}</span></div>
+      <div class="modal-row"><span>Email</span><span>${email}</span></div>
+      <div class="modal-row"><span>Телефон</span><span>${phone}</span></div>
+      <div class="modal-row"><span>Ніша</span><span>${niche}</span></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Статус і проект</div>
+      <div class="modal-row"><span>Статус</span><span><span class="badge ${badgeMap[status]}">${statusMap[status]}</span></span></div>
+      <div class="modal-row"><span>Проект / Запит</span><span>${project}</span></div>
+      <div class="modal-row"><span>Сума контракту</span><span style="color:var(--green);font-weight:700">${amount}</span></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-gold" onclick="notify("Telegram відкрито для ${name} ✓");closeModalDirect()">✉️ Написати в Telegram</button>
+      <button class="btn btn-outline" onclick="notify("КП підготовлено ✓");closeModalDirect()">📄 Підготувати КП</button>
+      <button class="btn btn-outline" onclick="notify("Нотатку збережено ✓");closeModalDirect()">📝 Додати нотатку</button>
+    </div>`;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function openProject(client,name,stage,pct,amount){
+  const stages=['ТЗ','Аванс','Розробка','Тестування','Здача','Завершено'];
+  const stageIdx={'Аналіз':0,'Розробка':2,'Тестування':3,'Здача':4,'Завершено':5}[stage]||1;
+  const stageHTML=stages.map((s,i)=>`<div class="stage-step ${i<stageIdx?'done':i===stageIdx?'active':''}">${s}</div>`).join('');
+  document.getElementById('modalTitle').textContent='🚀 '+client;
+  document.getElementById('modalBody').innerHTML=`
+    <div class="modal-section">
+      <div class="modal-section-title">Деталі проекту</div>
+      <div class="modal-row"><span>Назва</span><span>${name}</span></div>
+      <div class="modal-row"><span>Клієнт</span><span>${client}</span></div>
+      <div class="modal-row"><span>Поточний етап</span><span style="color:var(--gold);font-weight:700">${stage}</span></div>
+      <div class="modal-row"><span>Прогрес</span><span>${pct}%</span></div>
+      <div class="modal-row"><span>Сума</span><span style="color:var(--green);font-weight:700">${amount}</span></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Етапи виконання</div>
+      <div class="stage-track">${stageHTML}</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-gold" onclick="notify("Статус оновлено ✓");closeModalDirect()">✓ Оновити статус</button>
+      <button class="btn btn-outline" onclick="notify("Нотатку збережено ✓");closeModalDirect()">📝 Додати нотатку</button>
+      <button class="btn btn-outline" onclick="notify("Клієнту надіслано запит ✓");closeModalDirect()">✉️ Написати клієнту</button>
+    </div>`;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+// filterCRM moved to Supabase module above
+</script>
+</div></body>
+</html>
